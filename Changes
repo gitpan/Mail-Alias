@@ -1,5 +1,16 @@
 			Revision history for Perl module Mail::Alias.
 
+1.12 21 October 2000
+	Removed requirement to use Mail::Address which was never actually used
+	delete() - changed matching so blank lines (^\s*$) are skipped in alias checking
+	delete() - now returns undef if nothing done or "1" upon success
+	Fix bug that saved object variables (start with _) in alias files when write() is used
+
+ 	Rewrite of README to separately address the legacy methods read(), write(), format()
+
+	alias_check() - changed the match test to require that a FOUND alias is followed
+	by either : or whitespace to eliminate match of "test" with "testxxxx"
+
 1.11 3 September 2000
 	Minor cleanup of README and perldoc
 	Fixed the makefile for proper installation

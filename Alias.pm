@@ -1,6 +1,6 @@
 # Mail::Alias.pm
 #
-# Version 1.11 		Date: 3 September 2000 
+# Version 1.12 		Date: 21 October 2000 
 #
 # Copyright (c) 2000 Tom Zeltwanger <perlename.com>. All rights reserved.
 # This program is free software; you can redistribute it and/or
@@ -13,6 +13,7 @@
 # PERLDOC documentation is found at the end of this file
 
 
+
 ##################################
 package Mail::Alias;             #
 ##################################
@@ -20,7 +21,7 @@ package Mail::Alias;             #
 use Carp;
 use vars qw($VERSION);
 
-$VERSION = do { my @r=(q$Revision: 1.11 $=~/\d+/g); sprintf "%d."."%02d"x$#r,@r};
+$VERSION = do { my @r=(q$Revision: 1.12 $=~/\d+/g); sprintf "%d."."%02d"x$#r,@r};
 sub Version { $VERSION }
 
 
@@ -59,7 +60,6 @@ sub new {
 	return $object;
 
 } 
-
 
 
 #----------#
@@ -120,14 +120,11 @@ sub exists {
 	my ($self, $alias) = @_;
 
 	
-
 	if ($self->{_usemem}) {	
  		return defined $self->{$alias};	
 
-
 	}
 	else {						
-
 						
 	my ($self, $alias) = @_;	
 	my ($text_line) = undef;	# Temp storage of the line from the alias file
@@ -145,9 +142,7 @@ sub exists {
  			return $text_line;
 		} 
 
-
 	} 
-
 
 	# If you got here, the EOF was hit - returns undefined
 	$self->{_errormsg} = "ERROR: There is no alias $alias in $aliases_file";
@@ -155,9 +150,7 @@ sub exists {
 	return undef;	
 
 	} 
-
 } 
-
 
 
 #----------#
@@ -174,7 +167,6 @@ sub expand {
   next if(defined $done{$alias});
   $done{$alias} = 1;
   if(defined $me->{$alias}) {			
-
    push(@todo,@{$me->{$alias}});
   }
   else {
@@ -182,7 +174,6 @@ sub expand {
   }
  }
  wantarray ? @result : \@result;	
-
 }
 
 
@@ -221,7 +212,6 @@ sub append {
 } 
 
 
-
 #------------------------------#
 # Alias::delete() Method       #
 #	Version 1.0		8/13/00#
@@ -230,68 +220,56 @@ sub append {
 sub delete {
 	
 	my ($self, @alias_list) = @_;			
-
 	$filename = $self->{_filename};			
+	my $deleted = undef;					
+										
 
 	
-
 	
-
 		my $working_file = ($filename . ".tmp");
 		rename ("$filename", "$working_file");		
 	
 	
-
 	open (NEW_FILE ,">$filename")
 		|| die "ERROR: Can't open $filename\n";
 	
 	
-
 	open (EXISTING_FILE , "$working_file")
 		|| die "ERROR: Can't open $working_file\n";
 
 	
-
 	
 
-
 	while (defined ($textline = <EXISTING_FILE>)) {		
-
 		chomp ($textline);
 		
 		
-
-		if (($textline =~ /^\s+$/) || ($textline =~ /^#/)) {
+		if (($textline =~ /^\s*$/) || ($textline =~ /^#/)) {
 			print NEW_FILE "$textline\n";
 		}
 
 		else {				
-
 			
 			
-
 			
-
 			if (!alias_check ($textline , \@alias_list)) {
 				print NEW_FILE "$textline\n";
 			} 
-
 			
 			else {		
-
 				print "DELETING:  $textline\n";
+				$deleted = "1";
 			}
 			
 			
 		} 
-
 		
 	} 
-
 
 	# Close the files 
 	close EXISTING_FILE;
 	close NEW_FILE;
+	return $deleted;
 	
 } # end delete
 
@@ -308,7 +286,6 @@ sub update {
 
 	undef $found_it;						
 
-
 	# Form the alias line from the passed arguments
 	if ($address_string) {					# If there is a second argument passed
 		$alias_line = "$alias" . ": " . " $address_string";
@@ -323,26 +300,20 @@ sub update {
 	$filename = $self->{_filename};				# Get the name of the aliases_file to be updated
 
 	
-
 	
-
 	my $working_file = ($filename . ".tmp");
 	rename ("$filename", "$working_file");		
 	
 	
-
 	open (NEW_FILE ,">$filename")
 		|| die "ERROR: Can't open $filename\n";
 	
 	
-
 	open (EXISTING_FILE , "$working_file")
 		|| die "ERROR: Can't open $working_file\n";
 
 	
-
 	
-
 	while (defined ($textline = <EXISTING_FILE>)) {		# For every line
 	
 		# If line is blank or comment, just write it out
@@ -355,31 +326,23 @@ sub update {
 		else {				# Process alias lines here
 			
 			
-
 			if ($textline =~ /^$alias:/i) {
 				print NEW_FILE "$alias_line\n";
 				$found_it = "1";
 			} 
-
 			
 			else {	
-
 				
-
 				print NEW_FILE "$textline\n";						
 			
 			} 
 
 
-
 		} 
-
 		
 	} 
 
-
 	
-
 	close EXISTING_FILE;
 	close NEW_FILE;
 
@@ -408,12 +371,11 @@ sub valid_alias {
 } 
 
 
-
 #------------------#
 # alias_file Method#
 #------------------#
 # alias_file returns the complete path to the alias file that is being operated upon
-# by Hyperalias methods.
+# by the Mail::Alias methods.
 # If a filename is passed as an argument, it is set to be the new filename for
 # all future operations. The file must exist or nothing is done. 
 
@@ -425,18 +387,15 @@ sub alias_file {
 	if ($newname) {
 
 		
-
 		if (-e $newname) {
 			$self->{_filename} = $newname;
 			return "$newname";		
-
 		}
 
 		else {
 		
 			$self->{_errormsg} = "ERROR: $newname does not exist\n";
 			return undef;			
-
 		}
 	
 	}
@@ -445,12 +404,10 @@ sub alias_file {
   # If no argument, just return the current working aliases file pathname
 	else {		
 
-
 		return $self->{_filename};	
 	}
 	
 } 
-
 
 
 #------------#
@@ -465,17 +422,14 @@ sub error_check {
 	my $return_string;
 	
 	
-
 	$return_string = $self->{_errormsg};
 	
 	
-
 	$self->{_errormsg} = "No error found";
 	
 	return $return_string;	
 
 } 
-
 
 
 #------------#
@@ -491,26 +445,31 @@ sub alias_check {
 	$text = $_[0];			# 1st argument is the line of text
 	$list = $_[1];			# 2nd argument is an array reference
 
+	# Extract the first non-whitespace from the text_line
+	
+	$text =~ /^\s*(\S+)\s+/;
+	$text = $1;				
+	$text =~ s/://;			# Get rid of trailing :
+
 	# Search for the string
 	$list_length = @$list;
 
 	for ($list_index = 0; $list_index < $list_length; $list_index++) {
 
-		if ($text =~ /^$$list[$list_index]/i) {
-
+		# Check each alias for a match with the beginning of the text line
+		# to get a match, the alias must be:
+		#	the first non-whitespace on the line
+		#	followed by whitespace or a : character
+		if ($text =~ /^\s*$$list[$list_index]:?\s*$/i) {
 			return $$list[$list_index];	# Return the matching string from the list
 		} 
-
 		
 	} 
-
 	
 	
-
 	return undef;
 	
 } 
-
 
 
 #############################################################
@@ -519,7 +478,7 @@ package Mail::Alias::Sendmail;                              #
 #############################################################
 
 use Carp;
-use Mail::Address;
+#use Mail::Address;
 
 use vars qw(@ISA);
 
@@ -558,9 +517,11 @@ sub write {
  }
 
  foreach $alias (sort keys %$me) {
-  my $ln = $alias . ": " . join(", ",@{$me->{$alias}});
-  $ln =~ s/(.{55,78},)/$1\n\t/g;
-  print $fd $ln,"\n";
+   unless ($alias =~ /^_/) {	
+	my $ln = $alias . ": " . join(", ",@{$me->{$alias}});
+	$ln =~ s/(.{55,78},)/$1\n\t/g;
+	print $fd $ln,"\n";
+   }
  }
 
  close(ALIAS) if($fd == \*ALIAS);
@@ -598,19 +559,15 @@ sub read {
  while(<ALIAS>) {
   chomp;
   if(defined $line && /^\s/) {		
-
    $line .= $_;
   }
   else {
    if(defined $line) {
     if($line =~ s/^([^:]+)://) {	
-
      my @resp;
      $group = $1;
      $group =~ s/(\A\s+|\s+\Z)//g;	
-
      $line =~ s/\"?:include:(\S+)\"?/_include_file($1)/eg;	
-
      $line =~ s/(\A[\s,]+|[\s,]+\Z)//g;
 
      while(length($line)) {
@@ -623,7 +580,6 @@ sub read {
     undef $line;
    }
    next if (/^#/ || /^\s*$/);		
-
    $line = $_;
   }
  }
@@ -643,7 +599,7 @@ package Mail::Alias::Binmail; #
 ###############################
 
 use Carp;
-use Mail::Address;
+#use Mail::Address;
 
 use vars qw(@ISA);
 
@@ -713,12 +669,13 @@ sub write {
  foreach $alias (sort keys %$me) {
   my @a = @{$me->{$alias}};
   map { $_ = '"' . $_ . '"' if /\s/ } @a;
-  print $fd "alias $alias ",join(" ",@a),"\n";
+	unless ($alias =~ /^_/) {
+	  print $fd "alias $alias ",join(" ",@a),"\n";
+	}
  }
 
  close(ALIAS) if($fd == \*ALIAS);
 }
-
 
 
 #############################
