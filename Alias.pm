@@ -1,15 +1,14 @@
 # Mail::Alias.pm
 #
-# Version 1.10 		Date: 30 August 2000 
-#	Modified for readability and upcoming changes by Tom Zeltwanger
-#	Versions through 1.06 provided by Graham Barr, original author of Mail::Alias
+# Version 1.11 		Date: 3 September 2000 
 #
-# Copyright (c) 2000 Tom Zeltwanger <tomz@ename.com>. All rights reserved.
-# 	The format(), expand(), read(), and write() methods are Copyright by G. Barr 2000,
-#	modified by T. Zeltwanger
-#
+# Copyright (c) 2000 Tom Zeltwanger <perlename.com>. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
+
+#  The format(), expand(), read(), and write() methods are Copyright by
+#  Graham Barr, and modified by T. Zeltwanger
+#
 
 # PERLDOC documentation is found at the end of this file
 
@@ -21,7 +20,7 @@ package Mail::Alias;             #
 use Carp;
 use vars qw($VERSION);
 
-$VERSION = do { my @r=(q$Revision: 1.10 $=~/\d+/g); sprintf "%d."."%02d"x$#r,@r};
+$VERSION = do { my @r=(q$Revision: 1.11 $=~/\d+/g); sprintf "%d."."%02d"x$#r,@r};
 sub Version { $VERSION }
 
 
@@ -721,6 +720,7 @@ sub write {
 }
 
 
+
 #############################
 # Documentation starts here #
 #############################
@@ -745,8 +745,11 @@ C<Mail::Alias> can read various formats of mail alias. Once an object has been c
 =item B<new ()>
 Alias objects can be created in two ways;
  With a format specified- Mail::Alias::Sendmail->new([filename])
- Without a format specified- Mail::Alias->new([filename]}. Format defaults to SENDMAIL
-In either case, the filename is optional and, if supplied, it will be read in when the object is created. Available formats are Sendmail, Ucbmail, and Binmail.
+ Without a format specified- Mail::Alias->new([filename]}. Format defaults to
+  SENDMAIL
+In either case, the filename is optional and, if supplied, it will be read in
+ when the object is created. Available formats are Sendmail, Ucbmail, and
+  Binmail.
 
 =back
 
@@ -755,26 +758,40 @@ In either case, the filename is optional and, if supplied, it will be read in wh
 =over 4
 
 =item B<read ()>
-Reads an alias file of the specified format into memory. Comments or blank lines are lost upon reading. Due to storage in a hash, ordering of the alias lines is also lost.
+Reads an alias file of the specified format into memory. Comments or blank
+ lines are lost upon reading. Due to storage in a hash, ordering of the alias
+ lines is also lost.
 
 =item B<write ()>
-The current set of aliases contained in the object memory are written to a file using the current format.
-If a filehandle is passed, data is written to the already opened file. If a filename is passed, it is opened and the memory is written to the file. Note: if passing a filename, include the mode (i.e. to write to a file named aliases pass >aliases). Before writing, the alias lines are sorted alphabetically.
+The current set of aliases contained in the object memory are written to a
+ file using the current format.
+If a filehandle is passed, data is written to the already opened file. If a
+ filename is passed, it is opened and the memory is written to the file.
+ Note: if passing a filename, include the mode (i.e. to write to a file named
+ aliases pass >aliases). Before writing, the alias lines are sorted
+ alphabetically.
 
 =item B<format ()>
 Set the current alias file format. 
 
 =item B<exists ()>
-Indicates the presence of the passed alias within the object (if using memory access), or the current aliases file (if using direct file access). For direct file access, the return value is the address string for the alias.
-
+Indicates the presence of the passed alias within the object (if using memory
+ access), or the current aliases file (if using direct file access). For
+ direct file access, the return value is the address string for the alias.
+ 
 =item B<expand ()>
-Expands the passed alias into a list of addresses. Expansion properly handles :include: files, recursion, and continuation lines.Only works when memory access is being used. If the alias is not found in the object, you get back what you sent.
+Expands the passed alias into a list of addresses. Expansion properly handles
+ :include: files, recursion, and continuation lines.Only works when memory
+  access is being used. If the alias is not found in the object, you get back
+  what you sent.
 
 =item B<alias_file ()>
 Sets or gets the name of the current alias filename for direct access.
 
 =item B<append () *-Sendmail only-*>
-Adds an alias to an existing Sendmail alias file. The alias and addresses can be passed as two separate arguments (alias, addresses) or as a single line of text (alias: addresses)
+Adds an alias to an existing Sendmail alias file. The alias and addresses can
+ be passed as two separate arguments (alias, addresses) or as a single line of
+ text (alias: addresses)
 
 =item B<delete () *-Sendmail only-*>
 Deletes the entry for an alias from the current alias file.
@@ -783,10 +800,12 @@ Deletes the entry for an alias from the current alias file.
 Replaces the address string entry for an alias in the current alias file.
 
 =item B<usemem ()>
-Sets the working mode to use memory (indirect access). Use read(), write() and format() methods.
+Sets the working mode to use memory (indirect access). Use read(), write() and
+ format() methods.
 
 =item B<usefile ()>
-Sets the working mode to use files (direct access). Use append() and delete() methods.
+Sets the working mode to use files (direct access). Use append() and delete()
+ methods.
 
 
 =back
@@ -800,6 +819,10 @@ Tom Zeltwanger <perl@ename.com> (CPAN author ID: ZELT)
 Copyright (c) 2000 Tom Zeltwanger. All rights reserved. This program is free
 software; you can redistribute it and/or modify it under the same terms
 as Perl itself.
+
+Versions up to 1.06, Copyright (c) 1995-1997 Graham Barr. All rights reserved.
+This program is free software; you can distribute it and/or modify it under
+the same terms as Perl itself.
 
 =cut
 

@@ -1,6 +1,10 @@
 			Revision history for Perl module Mail::Alias.
 
-1.7  Released 30 August 2000, first version by Tom Zeltwanger <perl@ename.com>
+1.11 3 September 2000
+	Minor cleanup of README and perldoc
+	Fixed the makefile for proper installation
+
+1.10  Released 30 August 2000, first version by Tom Zeltwanger <perl@ename.com>
 	Added methods that act directly on sendmail alias files
 	  including append(), delete(), update(), valid_alias()
 	
@@ -11,5 +15,5 @@
 
 	Changed exists() to find aliases either in a file or in memory
 
-1.6  Versions up to 1.16 by Graham Barr
+1.6  Versions up to 1.06 by Graham Barr
 	No change log information was available for Mail::Alias
