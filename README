@@ -1,0 +1,94 @@
+This is the README file for the PERL module Mail::Alias
+for Version 1.10  30 August 2000
+
+Mail::Alias is avaialbe for download at www.CPAN.org under Mail modules
+or under the CPAN author ID: ZELT
+
+You require perl 5.001 or later to use this library
+	This is a legacy of the previous version of Mail::Alias that was included
+	in MailTools. This module may actually work with earlier versions of PERL
+
+To install the library, run these commands:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+All files contained in this installation are Copyright (c) 2000
+Tom Zeltwanger. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify it under 
+the same terms as Perl itself.
+
+
+Note: To read the documentation embedded in the Mail::Alias module, just type:
+	perldoc Alias.pm
+
+------------------------------------------------------------------------------
+Any questions or comments (Please send your feeback) should be addressed to  -
+Tom Zeltwanger <perl@ename.com>                                              -
+------------------------------------------------------------------------------
+
+SYNOPSYS
+This module allows manipulation of various types of E-Mail Alias files.
+
+HISTORY
+This module evolved out of the work started by Graham Barr, who is responsible
+for all versions up to Version 1.06. My appreciation to Graham for that work, and 
+for letting me combine our works, and assume authorship of the module. 
+
+The capabilities provided in this module were developed as part of the development
+of an E-mail Forwarding service based on sendmail and using PERL for automatic
+processing of Alias files. This code is being provided to the PERL community as a
+measure of appreciation for the free PERL software and the incredible support
+network that comes with PERl at no charge through the Usenet Newsgroups.
+
+
+DESCRIPTION
+Mail::Alias allows access to the contents of Alias files either directly (FILE mode) or
+through a buffer within the Alias object (MEMORY mode). The interface is Object
+Oriented,so some familiarity with OO PERL is requried. Using a PERL OO module is very
+easy, and is well described in several books.
+
+Mail::Alias allows you to access the contents of an alias file directly; making
+additions, deletions, expansions, and updates to aliases in the file. In this FILE
+mode, operations are somewhat slow because of the creation and deletion of files to 
+provide update capabilities to random access files. This should not be a problem unless
+you have huge files. 
+
+There is also a MEMORY mode which allows you to operate on alises that are first read
+into the Alias object you create. The object stores the alias data in a Hash, which 
+means that any ordering of the alias file linew is lost. Comments are also lost if data
+is read and then later written to a new file. For most users this will not cause a problem.
+However, if you have heavily commented alias files, or have files where alias creation is
+important, then use the FILE mode.
+
+The operation of each of the methods is described briefly below. Usage is shown in the embedded documentation in Alias.pm
+
+METHODS
+<read ()> Reads an alias file of the specified format into memory. Comments or blank lines are lost upon reading.Due to storage in a hash, ordering of the alias lines is also lost.
+
+<write ()> - The current set of aliases contained in the object memory are written to a file using the current format. If a filehandle is passed, data is written to the already opened file. If a filename is passed, it is opened and the memory is written to the file. Note: if passing a filename, include the mode (i.e. to write to "aliases" pass ">aliases").
+Before writing, the alias lines are sorted alphabetically.
+
+<format ()> Set the current alias file format. 
+
+<exists ()> - Indicates the presence of the passed alias within the object (if using memory access), or the current aliases file (if using direct file access). For direct file access, the return value is the address string for the alias line in the file.
+
+<expand ()> - Expands the passed alias into a list of addresses. Expansion properly handles :include: files, recursion, and continuation lines. expand() only works when memory access is being used. If the alias is not found in the object, you get back what you sent.
+
+<alias_file ()> - Sets or gets the name of the current alias filename for direct access.
+
+<append () *-Sendmail only-*> Adds an alias to an existing Sendmail alias file. The alias and addresses can be passed as two separate arguments (alias, addresses) or as a single line of text (alias: addresses)
+
+<delete () *-Sendmail only-*> - Deletes the entry for an alias from the current alias file.
+
+<update () *-Sendmail only-*> - Replaces the address string entry for an alias in the current alias file.
+
+<usemem ()> - Sets the working mode to MEMORY. Methods specific to the MEMORY mode are read(), write() and format() methods.
+
+<usefile ()> - Sets the working mode to FILE. Metods specific to the FILE mode are append() and delete() methods.
+
+
+
